@@ -14,14 +14,14 @@
 
 ### 1. 配置 PAT（必需）
 
-自 **2026-07** 起，GitHub 限制 stargazers 接口仅 **仓库管理员/协作者的用户 PAT** 可访问，`GITHUB_TOKEN`也不行，
+自 2026-07 起，GitHub 收紧了项目star数据接口，仅仓库管理员可访问。
 
 1. 创建 [Personal Access Token](https://github.com/settings/tokens)（Classic 选 `public_repo` 或 `repo` 权限）
 2. 在仓库 **Settings → Secrets → Actions** 中添加 Secret：`GH_PAT`
 
 ### 2. Workflow 示例
 
-### Workflow 示例见：[examples/consumer-workflow.yml](examples/consumer-workflow.yml)
+### 见：[examples/consumer-workflow.yml](examples/consumer-workflow.yml)
 
 Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 README 末尾追加：
 
