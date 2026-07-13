@@ -21,7 +21,7 @@
 
 ### 2. Workflow 示例
 
-### 见：[examples/consumer-workflow.yml](examples/consumer-workflow.yml)
+**快速使用模板：[examples/consumer-workflow.yml](examples/consumer-workflow.yml)**
 
 Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 README 末尾追加：
 
