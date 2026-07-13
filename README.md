@@ -14,6 +14,15 @@
 
 ## 快速使用
 
+### 1. 配置 PAT（必需）
+
+自 **2026-07** 起，GitHub 限制 stargazers 接口仅 **仓库管理员/协作者的用户 PAT** 可访问，`GITHUB_TOKEN` 会返回 403（`Resource not accessible by integration`），**即使在本仓库运行也不例外**。
+
+1. 创建 [Personal Access Token](https://github.com/settings/tokens)（Classic 选 `public_repo` 或 `repo` 权限）
+2. 在仓库 **Settings → Secrets → Actions** 中添加 Secret：`GH_PAT`
+
+### 2. Workflow 示例
+
 ```yaml
 permissions:
   contents: write
@@ -29,6 +38,7 @@ jobs:
         with:
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
+          token: ${{ secrets.GH_PAT }}
 ```
 
 Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 README 末尾追加：
@@ -46,6 +56,7 @@ Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 
   with:
     owner: ${{ github.repository_owner }}
     repo: ${{ github.event.repository.name }}
+    token: ${{ secrets.GH_PAT }}
     image-format: png
     output-dir: ./assets
     filename: star-chart.png
@@ -57,7 +68,7 @@ Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 
 |------|------|--------|------|
 | `owner` | 是 | — | 仓库所有者 |
 | `repo` | 是 | — | 仓库名称 |
-| `token` | 否 | `GITHUB_TOKEN` | GitHub Token |
+| `token` | **是** | — | 仓库管理员/协作者的 PAT（`GH_PAT`），不可用 `GITHUB_TOKEN` |
 | `language` | 否 | `zh` | 图表语言：`zh` / `en` |
 | `image-format` | 否 | `svg` | 输出格式：`svg` / `png` |
 | `output-dir` | 否 | `.` | 图表输出目录（默认仓库根目录） |
@@ -83,6 +94,8 @@ permissions:
 jobs:
   star:
     uses: wanan9999/stars/.github/workflows/generate-star.yml@v1
+    secrets:
+      token: ${{ secrets.GH_PAT }}
     with:
       owner: ${{ github.repository_owner }}
       repo: ${{ github.event.repository.name }}
@@ -99,10 +112,10 @@ jobs:
 
 ```bash
 pip install -r requirements.txt
-export GITHUB_TOKEN=your_token
+export GITHUB_TOKEN=your_pat   # 必须是 PAT，不能是 Actions 的 GITHUB_TOKEN
 python action/main.py \
-  --owner octocat \
-  --repo Hello-World \
+  --owner wanan9999 \
+  --repo stars \
   --format svg \
   --commit-to-readme true
 ```
@@ -116,8 +129,11 @@ python action/main.py \
 
 ## Token 说明
 
-- 生成**当前仓库**的 Star 图：默认 `GITHUB_TOKEN` 即可
-- 生成**其他仓库**或**私有仓库**的 Star 图：需传入具备 `public_repo` 或 `repo` 权限的 PAT
+- **必须使用 PAT**：stargazers 接口不接受 Actions 内置的 `GITHUB_TOKEN`（integration token）
+- PAT 所属用户必须是目标仓库的**管理员或协作者**
+- 公开仓库：Classic PAT 需 `public_repo` 权限
+- 私有仓库：Classic PAT 需 `repo` 权限
+- 查其他仓库：PAT 用户同样需是该仓库 admin/collaborator
 
 ## 项目结构
 

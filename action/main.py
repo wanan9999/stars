@@ -17,6 +17,7 @@ def fetch_all_stargazers(owner: str, repo: str, token: str) -> list[datetime]:
     headers = {
         "Accept": "application/vnd.github.v3.star+json",
         "Authorization": f"Bearer {token}",
+        "X-GitHub-Api-Version": "2026-03-10",
     }
     stars: list[datetime] = []
     page = 1
@@ -27,6 +28,9 @@ def fetch_all_stargazers(owner: str, repo: str, token: str) -> list[datetime]:
             params={"per_page": 100, "page": page},
             timeout=30,
         )
+        if resp.status_code == 403:
+            print("请求失败: 403 - 请使用仓库管理员/协作者的 PAT（GITHUB_TOKEN 不可用）")
+            break
         if resp.status_code != 200:
             print(f"请求失败: {resp.status_code} - {resp.text}")
             break

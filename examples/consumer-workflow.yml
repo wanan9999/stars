@@ -22,3 +22,4 @@ jobs:
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
           language: zh
+          token: ${{ secrets.GH_PAT }}

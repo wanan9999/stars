@@ -10,9 +10,8 @@ inputs:
     description: Repository name
     required: true
   token:
-    description: GitHub token (defaults to workflow GITHUB_TOKEN)
-    required: false
-    default: ""
+    description: Personal access token (PAT) of a repo admin/collaborator. GITHUB_TOKEN is not supported for stargazers API since 2026-07.
+    required: true
   language:
     description: "Chart language: zh or en"
     required: false
@@ -69,7 +68,7 @@ runs:
       id: generate
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ inputs.token != '' && inputs.token || github.token }}
+        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         python "${{ github.action_path }}/action/main.py" \
           --owner "${{ inputs.owner }}" \

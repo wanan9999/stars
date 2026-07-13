@@ -48,8 +48,8 @@ on:
         default: "docs: update star history chart"
     secrets:
       token:
-        description: Optional GitHub token override
-        required: false
+        description: PAT of a repo admin/collaborator (e.g. GH_PAT secret)
+        required: true
     outputs:
       image-path:
         description: Path to generated chart

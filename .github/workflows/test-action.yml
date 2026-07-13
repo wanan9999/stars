@@ -25,11 +25,11 @@ jobs:
 
       - name: Run script (SVG, no commit)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           python action/main.py \
-            --owner octocat \
-            --repo Hello-World \
+            --owner "${{ github.repository_owner }}" \
+            --repo "${{ github.event.repository.name }}" \
             --lang en \
             --format svg \
             --output-dir ./output \
@@ -40,11 +40,11 @@ jobs:
 
       - name: Run script (PNG)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           python action/main.py \
-            --owner octocat \
-            --repo Hello-World \
+            --owner "${{ github.repository_owner }}" \
+            --repo "${{ github.event.repository.name }}" \
             --lang en \
             --format png \
             --output-dir ./output \
@@ -55,11 +55,11 @@ jobs:
 
       - name: Verify custom filename
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           python action/main.py \
-            --owner octocat \
-            --repo Hello-World \
+            --owner "${{ github.repository_owner }}" \
+            --repo "${{ github.event.repository.name }}" \
             --lang en \
             --format svg \
             --output-dir ./output \
@@ -69,11 +69,11 @@ jobs:
 
       - name: Verify README update
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           python action/main.py \
-            --owner octocat \
-            --repo Hello-World \
+            --owner "${{ github.repository_owner }}" \
+            --repo "${{ github.event.repository.name }}" \
             --lang en \
             --format svg \
             --output-dir . \
@@ -98,12 +98,13 @@ jobs:
         id: star-chart
         uses: ./
         with:
-          owner: octocat
-          repo: Hello-World
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
           language: en
           image-format: svg
           output-dir: .
           commit-to-readme: "false"
+          token: ${{ secrets.GH_PAT }}
 
       - name: Print action outputs
         run: |
