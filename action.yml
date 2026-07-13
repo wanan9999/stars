@@ -1,0 +1,100 @@
+name: GitHub Star History Chart
+description: Generate star growth trend chart and append it to README.md
+author: wanan9999
+
+inputs:
+  owner:
+    description: Repository owner (user or organization)
+    required: true
+  repo:
+    description: Repository name
+    required: true
+  token:
+    description: GitHub token (defaults to workflow GITHUB_TOKEN)
+    required: false
+    default: ""
+  language:
+    description: "Chart language: zh or en"
+    required: false
+    default: zh
+  image-format:
+    description: "Output image format: svg or png"
+    required: false
+    default: svg
+  output-dir:
+    description: Output directory for the generated chart file
+    required: false
+    default: .
+  filename:
+    description: "Output filename (default: stars.svg or stars.png)"
+    required: false
+    default: ""
+  readme-path:
+    description: README file path to append chart markdown
+    required: false
+    default: README.md
+  commit-to-readme:
+    description: Append chart to README and commit changes to the repository
+    required: false
+    default: "true"
+  commit-message:
+    description: Git commit message when committing README and chart
+    required: false
+    default: "docs: update star history chart"
+
+outputs:
+  image-path:
+    description: Path to the generated chart file
+    value: ${{ steps.generate.outputs.image-path }}
+  image-format:
+    description: Generated chart format (svg or png)
+    value: ${{ steps.generate.outputs.image-format }}
+  total-stars:
+    description: Total star count at generation time
+    value: ${{ steps.generate.outputs.total-stars }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.12"
+
+    - name: Install dependencies
+      shell: bash
+      run: pip install -r "${{ github.action_path }}/requirements.txt"
+
+    - name: Generate star history chart
+      id: generate
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token != '' && inputs.token || github.token }}
+      run: |
+        python "${{ github.action_path }}/action/main.py" \
+          --owner "${{ inputs.owner }}" \
+          --repo "${{ inputs.repo }}" \
+          --lang "${{ inputs.language }}" \
+          --format "${{ inputs.image-format }}" \
+          --output-dir "${{ inputs.output-dir }}" \
+          --filename "${{ inputs.filename }}" \
+          --readme-path "${{ inputs.readme-path }}" \
+          --commit-to-readme "${{ inputs.commit-to-readme }}"
+
+    - name: Commit chart and README
+      if: inputs.commit-to-readme == 'true'
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add "${{ inputs.readme-path }}" "${{ steps.generate.outputs.image-path }}"
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "${{ inputs.commit-message }}"
+          git push
+        fi
+
+branding:
+  icon: star
+  color: green

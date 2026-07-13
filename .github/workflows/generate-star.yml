@@ -1,0 +1,90 @@
+name: Generate Star History
+
+on:
+  workflow_call:
+    inputs:
+      owner:
+        description: Repository owner
+        required: true
+        type: string
+      repo:
+        description: Repository name
+        required: true
+        type: string
+      language:
+        description: "Chart language: zh or en"
+        required: false
+        type: string
+        default: zh
+      image-format:
+        description: "Output image format: svg or png"
+        required: false
+        type: string
+        default: svg
+      output-dir:
+        description: Output directory for chart file
+        required: false
+        type: string
+        default: .
+      filename:
+        description: "Output filename (default: stars.svg or stars.png)"
+        required: false
+        type: string
+        default: ""
+      readme-path:
+        description: README file path
+        required: false
+        type: string
+        default: README.md
+      commit-to-readme:
+        description: Append chart to README and commit changes
+        required: false
+        type: boolean
+        default: true
+      commit-message:
+        description: Git commit message
+        required: false
+        type: string
+        default: "docs: update star history chart"
+    secrets:
+      token:
+        description: Optional GitHub token override
+        required: false
+    outputs:
+      image-path:
+        description: Path to generated chart
+        value: ${{ jobs.generate.outputs.image-path }}
+      image-format:
+        description: Generated chart format
+        value: ${{ jobs.generate.outputs.image-format }}
+      total-stars:
+        description: Total star count
+        value: ${{ jobs.generate.outputs.total-stars }}
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    outputs:
+      image-path: ${{ steps.chart.outputs.image-path }}
+      image-format: ${{ steps.chart.outputs.image-format }}
+      total-stars: ${{ steps.chart.outputs.total-stars }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Generate star history chart
+        id: chart
+        uses: ./
+        with:
+          owner: ${{ inputs.owner }}
+          repo: ${{ inputs.repo }}
+          language: ${{ inputs.language }}
+          image-format: ${{ inputs.image-format }}
+          output-dir: ${{ inputs.output-dir }}
+          filename: ${{ inputs.filename }}
+          readme-path: ${{ inputs.readme-path }}
+          commit-to-readme: ${{ inputs.commit-to-readme }}
+          commit-message: ${{ inputs.commit-message }}
+          token: ${{ secrets.token }}
