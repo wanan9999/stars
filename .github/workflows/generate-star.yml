@@ -25,7 +25,7 @@ on:
         description: Output directory for chart file
         required: false
         type: string
-        default: .
+        default: .github
       filename:
         description: "Output filename (default: stars.svg or stars.png)"
         required: false

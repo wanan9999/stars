@@ -2,7 +2,7 @@
 
 为 GitHub 仓库生成 Star 增长趋势图，并**默认自动追加到 README.md 末尾**以 Markdown 形式渲染展示。
 
-![Star 增长趋势](./stars.svg)
+![Star 增长趋势](stars.svg)
 
 ## 功能
 
@@ -25,11 +25,11 @@
 
 **快速使用模板：[examples/consumer-workflow.yml](examples/consumer-workflow.yml)**
 
-Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 README 末尾追加：
+Action 会生成 `.github/stars.svg`（或 `.github/stars.png`），并在 README 末尾追加：
 
 ```markdown
 <!-- star-history-chart:start -->
-![owner/repo Star 增长趋势](./stars.svg)
+![owner/repo Star 增长趋势](./.github/stars.svg)
 <!-- star-history-chart:end -->
 ```
 
@@ -55,7 +55,7 @@ Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 
 | `token` | **是** | — | 仓库管理员/协作者的 PAT（`GH_PAT`），不可用 `GITHUB_TOKEN` |
 | `language` | 否 | `zh` | 图表语言：`zh` / `en` |
 | `image-format` | 否 | `svg` | 输出格式：`svg` / `png` |
-| `output-dir` | 否 | `.` | 图表输出目录（默认仓库根目录） |
+| `output-dir` | 否 | `.github` | 图表输出目录（默认 `.github`） |
 | `filename` | 否 | `stars.{format}` | 输出文件名，如 `stars.svg` |
 | `readme-path` | 否 | `README.md` | 要更新的 README 路径 |
 | `commit-to-readme` | 否 | `true` | 是否写入 README 并提交 |

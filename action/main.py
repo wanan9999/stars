@@ -88,7 +88,7 @@ def generate_modern_chart(
     stars: list[datetime],
     owner: str,
     repo: str,
-    output_dir: str | Path = ".",
+    output_dir: str | Path = ".github",
     language: str = "zh",
     image_format: str = "svg",
     filename: str | None = None,
@@ -194,7 +194,7 @@ def main() -> int:
     parser.add_argument("--token", default=None, help="GitHub token (defaults to GITHUB_TOKEN env)")
     parser.add_argument("--lang", choices=["zh", "en"], default="zh", help="Chart language")
     parser.add_argument("--format", choices=["svg", "png"], default="svg", help="Output image format")
-    parser.add_argument("--output-dir", default=".", help="Output directory for chart file (default: repo root)")
+    parser.add_argument("--output-dir", default=".github", help="Output directory for chart file (default: .github)")
     parser.add_argument(
         "--filename",
         default="",

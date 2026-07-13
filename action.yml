@@ -23,7 +23,7 @@ inputs:
   output-dir:
     description: Output directory for the generated chart file
     required: false
-    default: .
+    default: .github
   filename:
     description: "Output filename (default: stars.svg or stars.png)"
     required: false
