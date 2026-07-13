@@ -2,8 +2,6 @@
 
 为 GitHub 仓库生成 Star 增长趋势图，并**默认自动追加到 README.md 末尾**以 Markdown 形式渲染展示。
 
-仓库：[wanan9999/stars](https://github.com/wanan9999/stars)
-
 ## 功能
 
 - 通过 GitHub API 拉取完整 Star 历史
