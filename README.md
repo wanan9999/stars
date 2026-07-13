@@ -14,7 +14,7 @@
 
 ### 1. 配置 PAT（必需）
 
-自 2026-07 起，GitHub 收紧了项目star数据接口，仅仓库管理员可访问。
+自 2026-07 起，GitHub 收紧了项目star数据接口，仅仓库管理员可访问。见：[Github-blog](https://github.blog/changelog/2026-06-30-upcoming-access-restrictions-to-public-api-endpoints-and-ui-views/)
 
 1. 创建 [Personal Access Token](https://github.com/settings/tokens)（Classic 选 `public_repo` 或 `repo` 权限）
 2. 在仓库 **Settings → Secrets → Actions** 中添加 Secret：`GH_PAT`
