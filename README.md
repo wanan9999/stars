@@ -4,7 +4,7 @@
 
 ## 功能
 
-- 通过 GitHub API 拉取完整 Star 历史
+- 通过 GitHub API 拉取项目完整 Star 历史
 - 生成 1200×650 趋势图，支持 **SVG / PNG 二选一**（默认 SVG）
 - 支持中文 / 英文图表
 - **默认**将图表写入 `README.md` 末尾并自动 git commit + push
@@ -14,14 +14,14 @@
 
 ### 1. 配置 PAT（必需）
 
-自 **2026-07** 起，GitHub 限制 stargazers 接口仅 **仓库管理员/协作者的用户 PAT** 可访问，`GITHUB_TOKEN` 会返回 403（`Resource not accessible by integration`），**即使在本仓库运行也不例外**。
+自 **2026-07** 起，GitHub 限制 stargazers 接口仅 **仓库管理员/协作者的用户 PAT** 可访问，`GITHUB_TOKEN`也不行，
 
 1. 创建 [Personal Access Token](https://github.com/settings/tokens)（Classic 选 `public_repo` 或 `repo` 权限）
 2. 在仓库 **Settings → Secrets → Actions** 中添加 Secret：`GH_PAT`
 
 ### 2. Workflow 示例
 
-见 [examples./consumer-workflow.yml](examples./consumer-workflow.yml)
+### Workflow 示例见：[examples/consumer-workflow.yml](examples/consumer-workflow.yml)
 
 Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 README 末尾追加：
 
@@ -66,19 +66,6 @@ Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 
 | `image-path` | 生成的图表文件路径 |
 | `image-format` | 图表格式（`svg` 或 `png`） |
 | `total-stars` | 当前 Star 总数 |
-
-
-## 本地运行
-
-```bash
-pip install -r requirements.txt
-export GITHUB_TOKEN=your_pat   # 必须是 PAT，不能是 Actions 的 GITHUB_TOKEN
-python action/main.py \
-  --owner wanan9999 \
-  --repo stars \
-  --format svg \
-  --commit-to-readme true
-```
 
 ## Token 说明
 
