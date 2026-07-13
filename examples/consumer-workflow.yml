@@ -1,5 +1,3 @@
-# 在目标仓库中创建 .github/workflows/star-chart.yml
-
 name: Star History Chart
 
 on:

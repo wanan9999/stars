@@ -23,23 +23,7 @@
 
 ### 2. Workflow 示例
 
-```yaml
-permissions:
-  contents: write
-
-jobs:
-  chart:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Generate star history
-        uses: wanan9999/stars@v1
-        with:
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          token: ${{ secrets.GH_PAT }}
-```
+见 [examples./consumer-workflow.yml](examples./consumer-workflow.yml)
 
 Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 README 末尾追加：
 
@@ -85,28 +69,6 @@ Action 会生成仓库根目录下的 `stars.svg`（或 `stars.png`），并在 
 | `image-format` | 图表格式（`svg` 或 `png`） |
 | `total-stars` | 当前 Star 总数 |
 
-## 调用 Reusable Workflow
-
-```yaml
-permissions:
-  contents: write
-
-jobs:
-  star:
-    uses: wanan9999/stars/.github/workflows/generate-star.yml@v1
-    secrets:
-      token: ${{ secrets.GH_PAT }}
-    with:
-      owner: ${{ github.repository_owner }}
-      repo: ${{ github.event.repository.name }}
-      image-format: svg
-```
-
-## 环境要求
-
-- Python **3.12+**
-- Workflow 需 `permissions: contents: write` 以支持自动提交
-- 使用前需 `actions/checkout@v7`
 
 ## 本地运行
 
@@ -119,13 +81,6 @@ python action/main.py \
   --format svg \
   --commit-to-readme true
 ```
-
-## 发布版本
-
-1. 推送代码到 GitHub
-2. 创建 Tag：`git tag v1.0.0 && git push origin v1.0.0`
-3. 在 Releases 中发布 `v1.0.0`
-4. 消费者引用：`uses: wanan9999/stars@v1`
 
 ## Token 说明
 
@@ -143,10 +98,6 @@ stars/
 ├── action/main.py          # 核心逻辑
 ├── requirements.txt
 ├── app.py                  # 本地 CLI 入口
-├── examples/               # 消费者 Workflow 示例
+├── examples/               # 用户 Workflow 示例
 └── .github/workflows/      # 自测与 Reusable Workflow
 ```
-
-## License
-
-MIT
